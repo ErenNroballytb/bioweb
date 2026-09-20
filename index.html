@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+
+<!-- ====== SEO / OPEN GRAPH (sửa nội dung ở đây) ====== -->
+<title>TEN CUA TOI | Official Bio</title>
+<meta name="description" content="Trang bio cá nhân - các dự án phụ đề và phim mình thực hiện." />
+<meta name="theme-color" content="#05060a" />
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content="TEN CUA TOI | Official Bio" />
+<meta property="og:description" content="Trang bio cá nhân - các dự án phụ đề và phim mình thực hiện." />
+<meta property="og:image" content="assets/images/banner.jpg" />
+<meta property="og:locale" content="vi_VN" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="TEN CUA TOI | Official Bio" />
+<meta name="twitter:description" content="Trang bio cá nhân - các dự án phụ đề và phim mình thực hiện." />
+<meta name="twitter:image" content="assets/images/banner.jpg" />
+
+<!-- Có domain thật thì bỏ dấu comment và điền vào đây:
+<link rel="canonical" href="https://ten-mien-cua-ban.com/" />
+-->
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "TEN CUA TOI",
+  "description": "Trang bio cá nhân - các dự án phụ đề và phim mình thực hiện.",
+  "image": "assets/images/avatar.png"
+}
+</script>
+
+<link rel="icon" href="assets/images/favicon.png" type="image/png" />
+<link rel="apple-touch-icon" href="assets/images/avatar.png" />
+
+<!-- Font hỗ trợ tiếng Việt đầy đủ -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700&family=Saira+Condensed:wght@600;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="style.css" />
+</head>
+
+<body class="is-locked">
+
+  <!-- ====== NỀN ====== -->
+  <div class="bg-image" aria-hidden="true"></div>
+  <div class="bg-veil" aria-hidden="true"></div>
+  <canvas id="particles" class="bg-particles" aria-hidden="true"></canvas>
+  <div class="bg-scan" aria-hidden="true"></div>
+
+  <!-- ====== NÚT NHẠC NỀN ====== -->
+  <button id="bgm-toggle" class="bgm-toggle" type="button" hidden
+          aria-pressed="false" aria-label="Bật hoặc tắt nhạc nền">
+    <span class="bgm-icon" aria-hidden="true">►</span>
+    <span class="bgm-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+    <span class="bgm-text">BGM</span>
+  </button>
+
+  <!-- ====== TOAST THÔNG BÁO HỆ THỐNG ====== -->
+  <div id="toast" class="toast" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- ====== MÀN 0: KHỞI ĐỘNG (boot sequence + đồng hồ + nút bắt đầu) ====== -->
+  <section id="screen-boot" class="screen screen--boot is-active" aria-label="Khởi động hệ thống">
+    <div class="boot">
+      <span class="boot__corner boot__corner--tl" aria-hidden="true"></span>
+      <span class="boot__corner boot__corner--tr" aria-hidden="true"></span>
+      <span class="boot__corner boot__corner--bl" aria-hidden="true"></span>
+      <span class="boot__corner boot__corner--br" aria-hidden="true"></span>
+
+      <p class="boot__label">HỆ THỐNG</p>
+
+      <div class="boot__clock" aria-hidden="true">
+        <span id="boot-time">00:00:00</span>
+        <span id="boot-date" class="boot__date">--/--/----</span>
+      </div>
+
+      <div id="boot-terminal" class="boot__terminal" aria-hidden="true"></div>
+
+      <div class="boot__progress" aria-hidden="true">
+        <div class="boot__progress-track"><div id="boot-progress-bar" class="boot__progress-bar"></div></div>
+        <span id="boot-percent" class="boot__percent">0%</span>
+      </div>
+
+      <div class="boot__bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+
+      <button id="btn-boot" class="henshin boot__start" type="button">
+        <span class="henshin__glow" aria-hidden="true"></span>
+        <span class="henshin__label">BẮT ĐẦU</span>
+      </button>
+      <p class="henshin__hint">ẤN ĐỂ KHỞI ĐỘNG HỆ THỐNG</p>
+      <button id="boot-skip" class="boot__skip" type="button" hidden>SKIP &gt;&gt;</button>
+    </div>
+  </section>
+
+  <!-- ====== MÀN 1: LỜI MỞ ĐẦU ====== -->
+  <section id="screen-intro" class="screen screen--intro" aria-label="Lời mở đầu" hidden>
+
+    <!-- HUD trang trí 2 bên — chỉ hiện trên màn hình rộng -->
+    <div class="side-hud side-hud--left" aria-hidden="true">
+      <span class="side-hud__corner tl"></span>
+      <span class="side-hud__corner bl"></span>
+      <span class="side-hud__dot"></span>
+      <p class="side-hud__label">STANDBY</p>
+      <div class="side-hud__bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      <p class="side-hud__sub">SIGNAL</p>
+    </div>
+    <div class="side-hud side-hud--right" aria-hidden="true">
+      <span class="side-hud__corner tr"></span>
+      <span class="side-hud__corner br"></span>
+      <span class="side-hud__dot"></span>
+      <p class="side-hud__label">DATA LINK</p>
+      <p class="side-hud__code" id="side-hud-code">00000000</p>
+      <p class="side-hud__sub">SCAN ID</p>
+    </div>
+
+    <div class="intro">
+
+      <div class="intro__ring" aria-hidden="true">
+        <span class="ring ring--a"></span>
+        <span class="ring ring--b"></span>
+        <span class="ring ring--c"></span>
+        <span class="ring-core"></span>
+      </div>
+
+      <p class="intro__eyebrow" id="intro-system">Hệ thống sẵn sàng</p>
+      <h1 class="intro__hello" id="intro-hello">Xin chào, cảm ơn bạn đã ghé thăm.</h1>
+      <p class="intro__sub" id="intro-sub">Trước khi vào trang, dành cho mình một giây nhé.</p>
+
+      <!-- HUD hệ thống trang trí — lõi năng lượng xoay + dòng chữ trạng thái -->
+      <div class="intro__hud" aria-hidden="true">
+        <div class="intro__core">
+          <span class="intro__core-ring intro__core-ring--a"></span>
+          <span class="intro__core-ring intro__core-ring--b"></span>
+          <span class="intro__core-dot"></span>
+        </div>
+        <p class="intro__ticker" id="intro-ticker">ĐANG KHỞI TẠO KẾT NỐI...</p>
+      </div>
+
+      <!-- QR ủng hộ -->
+      <div class="support">
+        <p class="support__text" id="support-text">
+          Nếu bạn yêu thích những dự án phụ đề của mình, hãy ủng hộ để mình có thêm động lực tiếp tục.
+        </p>
+
+        <button class="qr qr-trigger" id="qr-open" type="button" aria-label="Phóng to mã QR ủng hộ">
+          <img class="qr-img" id="qr-img" src="assets/qr/qr-stk.png" alt="Mã QR chuyển khoản ủng hộ" />
+          <span class="qr__corner qr__corner--tl" aria-hidden="true"></span>
+          <span class="qr__corner qr__corner--tr" aria-hidden="true"></span>
+          <span class="qr__corner qr__corner--bl" aria-hidden="true"></span>
+          <span class="qr__corner qr__corner--br" aria-hidden="true"></span>
+        </button>
+        <p class="qr__hint">Chạm vào mã để phóng to</p>
+      </div>
+
+      <!-- Nút HENSHIN -->
+      <div class="henshin-wrap">
+        <button id="btn-henshin" class="henshin" type="button">
+          <span class="henshin__glow" aria-hidden="true"></span>
+          <span class="henshin__label">HENSHIN</span>
+        </button>
+        <p class="henshin__hint">ẤN VÀO ĐÂY ĐỂ TIẾP TỤC</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ====== MÀN 2: VIDEO HENSHIN ====== -->
+  <section id="screen-video" class="screen screen--video" aria-label="Video henshin" hidden>
+    <div class="video-box">
+      <video id="henshin-video" playsinline preload="none"></video>
+      <div class="video-frame" aria-hidden="true"></div>
+    </div>
+    <button id="btn-skip" class="skip" type="button">SKIP</button>
+  </section>
+
+  <!-- ====== MÀN 3: BIO ====== -->
+  <main id="screen-bio" class="screen screen--bio" hidden>
+
+    <!-- ====== HUD NAV ====== -->
+    <nav id="hud-nav" class="hud-nav" aria-label="Điều hướng trang">
+      <a href="#section-profile" class="hud-nav__link is-active" data-target="section-profile">PROFILE</a>
+      <a href="#section-archive" class="hud-nav__link" data-target="section-archive">ARCHIVE</a>
+      <a href="#section-log" class="hud-nav__link" data-target="section-log">SYSTEM LOG</a>
+      <a href="#section-support" class="hud-nav__link" data-target="section-support">SUPPORT</a>
+    </nav>
+
+    <header class="hero" id="section-profile">
+      <div class="hero__banner">
+        <img id="banner-img" src="assets/images/banner.jpg" alt="" />
+      </div>
+
+      <div class="hero__body">
+        <div class="avatar" role="button" tabindex="0" aria-label="Ảnh đại diện">
+          <img id="avatar-img" src="assets/images/avatar.png" alt="Ảnh đại diện" />
+          <span class="avatar__ring" aria-hidden="true"></span>
+        </div>
+
+        <h1 class="hero__name" id="bio-name">TEN CUA TOI</h1>
+        <p class="hero__tagline" id="bio-tagline">Subtitle project</p>
+
+        <p class="hero__about" id="bio-about">Mô tả của tôi</p>
+
+        <div class="links">
+          <a id="link-zalo" class="btn-zalo" href="#" target="_blank" rel="noopener noreferrer">
+            <span class="btn-zalo__dot" aria-hidden="true"></span>
+            ZALO
+          </a>
+          <a id="link-tiktok" class="btn-tiktok" href="#" target="_blank" rel="noopener noreferrer">
+            <span class="btn-tiktok__dot" aria-hidden="true"></span>
+            TIKTOK
+          </a>
+        </div>
+
+        <dl class="readout" aria-label="Thông tin hệ thống">
+          <div class="readout__row"><dt>STATUS</dt><dd><span class="readout__dot" aria-hidden="true"></span>ONLINE</dd></div>
+          <div class="readout__row"><dt>ROLE</dt><dd id="readout-role">SUBTITLE OPERATOR</dd></div>
+          <div class="readout__row"><dt>SYSTEM</dt><dd>HENSHIN BIO</dd></div>
+          <div class="readout__row"><dt>LOCATION</dt><dd id="readout-location">VIETNAM</dd></div>
+          <div class="readout__row"><dt>PROJECTS</dt><dd id="readout-projects">0</dd></div>
+          <div class="readout__row"><dt>EPISODES</dt><dd id="readout-episodes">—</dd></div>
+          <div class="readout__row"><dt>COMPLETED</dt><dd id="readout-completed">0</dd></div>
+        </dl>
+      </div>
+    </header>
+
+    <section id="section-stats" class="stats" aria-labelledby="stats-title" hidden>
+      <div class="section-head">
+        <h2 id="stats-title">SYSTEM STATISTICS</h2>
+      </div>
+      <div id="stats-grid" class="stats__grid"></div>
+    </section>
+
+    <section id="section-archive" class="projects" aria-labelledby="projects-title">
+      <div class="section-head">
+        <h2 id="projects-title">PROJECT ARCHIVE</h2>
+        <p id="projects-count" class="section-head__meta"></p>
+      </div>
+
+      <div id="archive-filters" class="archive-filters" hidden></div>
+
+      <div id="project-grid" class="grid"></div>
+      <p id="project-empty" class="empty" hidden>Chưa có dự án nào. Thêm vào mảng PROJECTS trong script.js.</p>
+    </section>
+
+    <section id="section-log" class="syslog" aria-labelledby="syslog-title">
+      <div class="section-head">
+        <h2 id="syslog-title">SYSTEM LOG</h2>
+      </div>
+      <div id="syslog-list" class="syslog__list" hidden></div>
+      <p id="syslog-empty" class="empty" hidden>Chưa có nhật ký hệ thống. Thêm entries vào mảng SYSTEM_LOG trong script.js.</p>
+    </section>
+
+    <section id="section-support" class="support-sys" aria-labelledby="support-sys-title">
+      <div class="section-head">
+        <h2 id="support-sys-title">SUPPORT SYSTEM</h2>
+      </div>
+      <div class="support-sys__body">
+        <button class="qr qr-trigger" type="button" aria-label="Phóng to mã QR ủng hộ">
+          <img class="qr-img" src="assets/qr/qr-stk.png" alt="Mã QR chuyển khoản ủng hộ" />
+          <span class="qr__corner qr__corner--tl" aria-hidden="true"></span>
+          <span class="qr__corner qr__corner--tr" aria-hidden="true"></span>
+          <span class="qr__corner qr__corner--bl" aria-hidden="true"></span>
+          <span class="qr__corner qr__corner--br" aria-hidden="true"></span>
+        </button>
+        <p class="qr__hint">SCAN TO SUPPORT</p>
+      </div>
+    </section>
+
+    <footer class="foot">
+      <div class="foot__status">
+        <p class="foot__online"><span class="readout__dot" aria-hidden="true"></span>SYSTEM STATUS: ONLINE</p>
+        <p id="foot-text">© <span id="foot-year"></span> TEN CUA TOI</p>
+      </div>
+      <button id="btn-replay" class="foot__replay" type="button">[ HENSHIN AGAIN ]</button>
+    </footer>
+  </main>
+
+  <!-- ====== MODAL DỰ ÁN ====== -->
+  <div id="modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden>
+    <div class="modal__backdrop" data-close></div>
+
+    <div class="modal__panel" role="document">
+      <button class="modal__close" type="button" data-close aria-label="Đóng">×</button>
+
+      <div class="modal__poster">
+        <img id="modal-poster" src="" alt="" />
+      </div>
+
+      <div class="modal__content">
+        <h3 id="modal-title"></h3>
+        <ul id="modal-meta" class="meta"></ul>
+        <p id="modal-desc" class="modal__desc"></p>
+        <a id="modal-link" class="btn-visit" href="#" target="_blank" rel="noopener noreferrer">TRUY CẬP</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== LIGHTBOX QR ====== -->
+  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Mã QR ủng hộ" hidden>
+    <div class="lightbox__backdrop" data-close></div>
+    <div class="lightbox__inner">
+      <button class="lightbox__close" type="button" data-close aria-label="Đóng">×</button>
+      <img id="lightbox-img" src="" alt="Mã QR chuyển khoản ủng hộ, phóng to" />
+    </div>
+  </div>
+
+  <!-- ====== HIỆU ỨNG CHUYỂN CẢNH HENSHIN ====== -->
+  <div id="henshin-fx" class="fx" aria-hidden="true">
+    <span class="fx__burst"></span>
+    <span class="fx__bar fx__bar--top"></span>
+    <span class="fx__bar fx__bar--bottom"></span>
+    <span class="fx__ring"></span>
+    <span class="fx__scan"></span>
+    <span class="fx__flash"></span>
+    <span class="fx__word">HENSHIN</span>
+  </div>
+
+  <!-- ====== ÂM THANH (thay file trong assets/audio/) ====== -->
+  <audio id="sfx-click" preload="none"></audio>
+  <audio id="sfx-henshin" preload="none"></audio>
+  <audio id="sfx-ambd" preload="none"></audio>
+  <audio id="sfx-amkt" preload="none"></audio>
+  <audio id="bgm" preload="none" loop></audio>
+
+  <script src="script.js"></script>
+</body>
+</html>
