@@ -78,7 +78,7 @@ Và khi Fukashigi xuất hiện...
 Sora biến thành Kamen Rider Mais — Rider chuột đầu tiên trong lịch sử Kamen Rider..`,
     year:        "2026",
     status:      "Updating",
-    link:        "https://odysee.com/@bbthichsubkr:5/KAMEN-RIDER-MY-TH:9",
+    link:        "https://odysee.com/@bbthichsubkr:5",
     extra: {                         // tuỳ chọn — hiện thêm trong modal
       "Thể loại": "Tokusatsu",
       "Số tập": "??"
