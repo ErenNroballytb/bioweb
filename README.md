@@ -299,3 +299,22 @@ xem web thoải mái hơn. Nếu sau này muốn bật lại tôn trọng cài �
 `const reduceMotion = false;` trong script.js trở lại thành
 `const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;`
 là khôi phục nguyên trạng.
+
+## 14. Để mọi người tự thấy bản mới, không cần bấm Ctrl+Shift+R
+
+Trình duyệt hay lưu tạm (cache) file `style.css` và `script.js` để lần
+sau vào web nhanh hơn — nên đôi khi sau khi bạn update, người khác vào
+lại vẫn thấy giao diện/hiệu ứng cũ vì trình duyệt của họ chưa chịu tải
+file mới.
+
+Đã sửa để **tự động hoàn toàn**, không cần bạn làm gì thêm mỗi lần
+update: trong `index.html`, `style.css` và `script.js` giờ được tải bằng
+một đoạn JS nhỏ tự gắn thêm dấu thời gian hiện tại vào cuối đường dẫn
+(`style.css?t=1234567890`). Vì con số này khác nhau mỗi lần trang được
+mở, trình duyệt luôn coi đó là "file mới" và tự tải bản mới nhất — kể cả
+với người đã từng vào web trước đó, không ai cần bấm Ctrl+Shift+R nữa,
+và bạn cũng không cần nhớ đổi số phiên bản tay như trước.
+
+Đánh đổi nhỏ: trang sẽ luôn tải lại CSS/JS mới ở mỗi lần vào, không tận
+dụng được cache trình duyệt — nhưng vì 2 file này khá nhẹ (vài chục KB)
+nên gần như không ảnh hưởng gì đến tốc độ tải trang.

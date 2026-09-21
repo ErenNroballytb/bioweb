@@ -41,7 +41,16 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700&family=Saira+Condensed:wght@600;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
 
-<link rel="stylesheet" href="style.css" />
+<script>
+  // Tự động tải style.css bản mới nhất mỗi lần vào trang — không cần
+  // tay đổi số phiên bản nữa, khỏi lo ai đó thấy bản cache cũ.
+  (function(){
+    var l = document.createElement("link");
+    l.rel = "stylesheet";
+    l.href = "style.css?t=" + Date.now();
+    document.head.appendChild(l);
+  })();
+</script>
 </head>
 
 <body class="is-locked">
@@ -330,6 +339,14 @@
   <audio id="sfx-amkt" preload="none"></audio>
   <audio id="bgm" preload="none" loop></audio>
 
-  <script src="script.js"></script>
+  <script>
+    // Tự động tải script.js bản mới nhất mỗi lần vào trang — cùng lý do
+    // như style.css ở trên, khỏi cần tay đổi số phiên bản.
+    (function(){
+      var s = document.createElement("script");
+      s.src = "script.js?t=" + Date.now();
+      document.body.appendChild(s);
+    })();
+  </script>
 </body>
 </html>
