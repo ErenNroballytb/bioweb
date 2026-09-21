@@ -78,7 +78,7 @@ Và khi Fukashigi xuất hiện...
 Sora biến thành Kamen Rider Mais — Rider chuột đầu tiên trong lịch sử Kamen Rider..`,
     year:        "2026",
     status:      "Updating",
-    link:        "https://odysee.com/@bbthichsubkr:5",
+    link:        "https://odysee.com/@bbthichsubkr:5/KAMEN-RIDER-MY-TH:9",
     extra: {                         // tuỳ chọn — hiện thêm trong modal
       "Thể loại": "Tokusatsu",
       "Số tập": "??"
@@ -861,7 +861,8 @@ function initParticles() {
 
   const isSmallScreen = window.innerWidth <= 480;
   const isLowEnd = (navigator.hardwareConcurrency || 4) <= 2;
-  const cap = (isSmallScreen || isLowEnd) ? 36 : 70;
+  const isTouch = window.matchMedia("(pointer:coarse)").matches;
+  const cap = (isSmallScreen || isLowEnd || isTouch) ? 30 : 70;
   const count = () => Math.min(cap, Math.round(window.innerWidth / 16));
 
   function resize() {
@@ -906,6 +907,20 @@ function initParticles() {
     if (document.hidden) cancelAnimationFrame(raf);
     else raf = requestAnimationFrame(frame);
   });
+
+  // Tạm dừng vẽ hạt trong lúc đang cuộn trang (chỉ trên thiết bị cảm ứng,
+  // nơi mỗi khung hình đều quý) — vẽ lại ngay khi người dùng dừng cuộn
+  // ~120ms, gần như không nhận ra bằng mắt nhưng cuộn mượt hơn rõ rệt.
+  if (isTouch) {
+    let scrollResume = null;
+    window.addEventListener("scroll", () => {
+      if (raf) { cancelAnimationFrame(raf); raf = null; }
+      clearTimeout(scrollResume);
+      scrollResume = setTimeout(() => {
+        if (!document.hidden) raf = requestAnimationFrame(frame);
+      }, 120);
+    }, { passive: true });
+  }
 }
 
 function debounce(fn, ms) {
@@ -1085,6 +1100,22 @@ function initHudNav() {
 /* ---------------------------------------------------------
    EASTER EGG nhẹ — chạm avatar 5 lần liên tiếp
    --------------------------------------------------------- */
+/* ---------------------------------------------------------
+   Tạm dừng animation trang trí khi cuộn ra khỏi khung nhìn — đỡ tốn
+   pin/CPU vô ích trong lúc cuộn trang dài (đặc biệt trên điện thoại).
+   --------------------------------------------------------- */
+function initOffscreenPause() {
+  if (!("IntersectionObserver" in window)) return;
+  const targets = $$(".avatar, .hero__name, .intro__hud, .side-hud");
+  if (!targets.length) return;
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      entry.target.classList.toggle("is-offscreen", !entry.isIntersecting);
+    });
+  }, { rootMargin: "80px" });
+  targets.forEach(t => io.observe(t));
+}
+
 function initEasterEgg() {
   const avatar = $(".avatar");
   if (!avatar) return;
@@ -1120,4 +1151,5 @@ runBootSequence();
 initHudNav();
 initEasterEgg();
 initIntroHud();
+initOffscreenPause();
 showScreen("boot");

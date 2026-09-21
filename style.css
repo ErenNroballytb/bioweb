@@ -80,7 +80,6 @@ button{ font:inherit; color:inherit; cursor:pointer; }
   background-image:var(--bg-url, none);
   background-size:cover;
   background-position:center;
-  background-attachment:fixed;
   transform:scale(1.04);
   filter:saturate(.75);
 }
@@ -1540,7 +1539,6 @@ body.is-glitching{ animation:pageGlitch .55s steps(2) both; }
     transition-duration:.01ms !important;
     scroll-behavior:auto !important;
   }
-  .bg-image{ background-attachment:scroll; }
   .bg-particles, .bg-scan{ display:none; }
 
   /* Ngoại lệ: viền sáng 7 màu ở avatar + tên vẫn chạy dù máy bật giảm
@@ -1560,4 +1558,45 @@ body.is-glitching{ animation:pageGlitch .55s steps(2) both; }
 @media (hover:none){
   .card:hover{ transform:none; }
   .avatar:hover img{ transform:none; }
+}
+
+/* Tạm dừng các animation trang trí khi phần tử bị cuộn ra khỏi màn hình */
+.is-offscreen .avatar__ring,
+.is-offscreen .intro__core-ring,
+.is-offscreen .intro__core-dot,
+.is-offscreen .side-hud__bars i,
+.is-offscreen.hero__name,
+.is-offscreen.hero__name::before{
+  animation-play-state:paused !important;
+}
+
+/* ---------------------------------------------------------
+   THIẾT BỊ CẢM ỨNG (điện thoại/tablet) — giảm hiệu ứng nặng để
+   cuộn trang mượt hơn. backdrop-filter (làm mờ nền) rất tốn tài
+   nguyên trên GPU điện thoại, đặc biệt khi đặt trên phần tử
+   "sticky" (nav dính) phải tính lại liên tục mỗi khung hình lúc
+   cuộn — nên giảm mạnh/bỏ hẳn ở đây, thay bằng nền đặc hơn 1 chút
+   để bù lại thị giác.
+   --------------------------------------------------------- */
+@media (pointer:coarse){
+  .hud-nav{
+    backdrop-filter:none;
+    background:rgba(5,6,10,.94);
+  }
+  .support, .boot{
+    backdrop-filter:none;
+  }
+  .modal__backdrop, .lightbox__backdrop{
+    backdrop-filter:none;
+    background:rgba(2,4,8,.92);
+  }
+
+  /* Những mảng nội dung chưa cuộn tới thì trình duyệt (Chrome/Android)
+     tạm bỏ qua việc tính layout/vẽ cho tới khi gần cuộn đến — giảm tải
+     đáng kể cho trang dài nhiều section. Safari chưa hỗ trợ thì tự bỏ
+     qua thuộc tính này, không ảnh hưởng gì. */
+  #section-stats, #section-archive, #section-log, #section-support{
+    content-visibility:auto;
+    contain-intrinsic-size:1px 900px;
+  }
 }

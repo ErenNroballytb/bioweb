@@ -240,3 +240,32 @@ hình ảnh, video, audio, link hiện tại. Những gì đã thêm/đổi:
   trong `conic-gradient(...)` ở 2 chỗ `.avatar__ring` và
   `.hero__name::before` trong style.css (đang dùng cùng 1 dãy 7 màu để
   đồng bộ).
+
+## 11. Sửa giật/lag khi cuộn trên điện thoại
+
+Nguyên nhân chính và cách đã sửa:
+
+- **`background-attachment:fixed` thừa**: phần tử nền đã `position:fixed`
+  sẵn nên thuộc tính này không thêm hiệu ứng gì, chỉ tốn tài nguyên —
+  đã bỏ.
+- **Nav dính (sticky) làm mờ nền liên tục lúc cuộn**: `backdrop-filter`
+  (blur) là 1 trong những hiệu ứng nặng nhất cho GPU điện thoại, đặc biệt
+  khi đặt trên phần tử sticky phải tính lại mỗi khung hình khi cuộn. Đã
+  tắt hẳn trên thiết bị cảm ứng (thay bằng nền đặc hơn 1 chút để bù thị
+  giác), giữ nguyên hiệu ứng đẹp trên desktop.
+- **Hiệu ứng hạt (particles) chạy nền liên tục**: giờ tự tạm dừng ngay khi
+  người dùng bắt đầu cuộn trên điện thoại, vẽ lại ngay khi dừng cuộn
+  (~0.12s) — gần như không nhận ra bằng mắt nhưng đỡ tốn CPU đúng lúc cần
+  mượt nhất. Số lượng hạt tối đa trên thiết bị cảm ứng cũng giảm thêm.
+- **Viền cầu vồng, lõi năng lượng, HUD 2 bên**: giờ tự tạm dừng khi bị
+  cuộn ra khỏi màn hình, chạy lại khi cuộn tới — đỡ phí tài nguyên chạy
+  ngầm vô ích.
+- **`content-visibility: auto`** cho các section dài (System Statistics,
+  Project Archive, System Log, Support) trên thiết bị cảm ứng — trình
+  duyệt (Chrome/Android) sẽ tạm bỏ qua việc tính toán layout/vẽ cho phần
+  chưa cuộn tới, giảm tải đáng kể cho trang dài. Safari (iPhone) chưa hỗ
+  trợ thuộc tính này thì tự động bỏ qua, không ảnh hưởng gì thêm.
+
+Những thay đổi này chỉ tác động trên thiết bị cảm ứng (điện thoại/tablet)
+qua `@media (pointer:coarse)` — trên máy tính (chuột) mọi hiệu ứng vẫn
+giữ nguyên như cũ.
