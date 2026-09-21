@@ -269,3 +269,33 @@ Nguyên nhân chính và cách đã sửa:
 Những thay đổi này chỉ tác động trên thiết bị cảm ứng (điện thoại/tablet)
 qua `@media (pointer:coarse)` — trên máy tính (chuột) mọi hiệu ứng vẫn
 giữ nguyên như cũ.
+
+## 12. Hiệu ứng HENSHIN giờ luôn chạy đầy đủ trên mọi máy
+
+Trước đây hiệu ứng chuyển cảnh HENSHIN (chớp sáng, thanh quét, chữ giật,
+rung màn hình) sẽ tự rút ngắn gần như tức thời nếu máy tính/điện thoại
+bật cài đặt "giảm chuyển động" (Windows: Accessibility → Visual effects
+→ Animation effects) — đây vốn là hành vi tôn trọng accessibility mặc
+định của trình duyệt. Theo yêu cầu, giờ hiệu ứng này được cho chạy đầy đủ
+đúng như thiết kế gốc trên MỌI máy, không phụ thuộc cài đặt đó nữa.
+
+Những hiệu ứng khác ít quan trọng hơn (tốc độ gõ chữ ở màn mở đầu, cuộn
+trang mượt/nhanh, hiệu ứng lọc dự án...) vẫn tôn trọng cài đặt máy như
+cũ để không ảnh hưởng người dùng nhạy cảm với chuyển động.
+
+## 13. Bỏ hẳn việc tự rút gọn hiệu ứng theo cài đặt máy
+
+Theo yêu cầu, đã bỏ toàn bộ cơ chế tôn trọng "giảm chuyển động"
+(prefers-reduced-motion) trên trang. Từ giờ MỌI hiệu ứng — particles nền,
+viền cầu vồng, vòng ping nút BẮT ĐẦU, hiệu ứng chuyển cảnh HENSHIN, gõ
+chữ, cuộn mượt... — chạy giống hệt nhau, đầy đủ trên mọi máy, bất kể máy
+đó có bật cài đặt "giảm chuyển động"/"reduce motion" ở hệ điều hành hay
+không.
+
+Lưu ý: đây là đánh đổi có chủ đích theo yêu cầu — cài đặt đó vốn giúp
+người dùng nhạy cảm với chuyển động/nhấp nháy (dễ chóng mặt, đau đầu...)
+xem web thoải mái hơn. Nếu sau này muốn bật lại tôn trọng cài đặt đó
+(ví dụ khi công khai chia sẻ rộng cho nhiều người xem), chỉ cần đổi dòng
+`const reduceMotion = false;` trong script.js trở lại thành
+`const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;`
+là khôi phục nguyên trạng.

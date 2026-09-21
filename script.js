@@ -145,7 +145,9 @@ const SYSTEM_LOG = [
 
 const $  = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
-const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+// Theo yêu cầu: mọi hiệu ứng trên trang LUÔN chạy đầy đủ trên mọi máy,
+// không tự rút gọn theo cài đặt "giảm chuyển động" của hệ điều hành nữa.
+const reduceMotion = false;
 
 // Thứ tự ưu tiên đuôi file cho audio/video "cân mọi định dạng".
 // Trình duyệt sẽ tự thử từng đuôi theo đúng thứ tự này; đuôi nào có
@@ -777,8 +779,10 @@ btnHenshin.addEventListener("click", () => {
   btnHenshin.classList.add("is-fired");
   btnHenshin.disabled = true;
 
-  if (reduceMotion) { afterTransition(); return; }
-
+  // Hiệu ứng chuyển cảnh HENSHIN được cố ý cho chạy ĐẦY ĐỦ trên mọi máy,
+  // kể cả khi hệ điều hành bật "giảm chuyển động" — vì đây là hiệu ứng
+  // đặc trưng (signature) của trang, người dùng đã yêu cầu ưu tiên hiệu
+  // ứng đẹp hơn là tự động rút gọn theo cài đặt máy.
   fx.classList.add("is-on");
   document.body.classList.add("is-shaking");
 

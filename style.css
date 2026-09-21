@@ -286,6 +286,28 @@ button{ font:inherit; color:inherit; cursor:pointer; }
 
 /* nút BẮT ĐẦU dùng chung style .henshin nhưng đổi tông sang xanh điện
    cho khác với nút HENSHIN (đỏ) ở màn sau */
+.boot__start-wrap{
+  position:relative;
+  width:100%;
+  max-width:340px;
+  margin-inline:auto;
+}
+/* vòng sóng lan tỏa liên tục quanh nút — thu hút chú ý bấm vào */
+.boot__ping{
+  position:absolute;
+  inset:0;
+  border-radius:4px;
+  border:2px solid var(--volt);
+  opacity:0;
+  pointer-events:none;
+  animation:bootPing 2.6s ease-out infinite;
+}
+.boot__ping--b{ animation-delay:1.3s; }
+@keyframes bootPing{
+  0%{ transform:scale(1); opacity:.65; }
+  100%{ transform:scale(1.14); opacity:0; }
+}
+
 .boot__start{
   background:linear-gradient(135deg, #063a45, var(--volt) 55%, #bff7ff);
   box-shadow:0 0 30px rgba(53,230,255,.45), inset 0 0 0 1px rgba(255,255,255,.18);
@@ -1531,28 +1553,9 @@ body.is-glitching{ animation:pageGlitch .55s steps(2) both; }
   .henshin-wrap{ margin-top:20px; }
 }
 
-/* giảm chuyển động */
-@media (prefers-reduced-motion: reduce){
-  *, *::before, *::after{
-    animation-duration:.01ms !important;
-    animation-iteration-count:1 !important;
-    transition-duration:.01ms !important;
-    scroll-behavior:auto !important;
-  }
-  .bg-particles, .bg-scan{ display:none; }
-
-  /* Ngoại lệ: viền sáng 7 màu ở avatar + tên vẫn chạy dù máy bật giảm
-     chuyển động — đây là hiệu ứng trang trí nhỏ, xoay chậm, không nhấp
-     nháy mạnh nên vẫn an toàn cho người nhạy cảm chuyển động. */
-  .avatar__ring, .hero__name::before, .hero__name{
-    animation-duration:4s !important;
-    animation-iteration-count:infinite !important;
-  }
-  .intro__core-ring--a{ animation-duration:3s !important; animation-iteration-count:infinite !important; }
-  .intro__core-ring--b{ animation-duration:2.2s !important; animation-iteration-count:infinite !important; }
-  .intro__core-dot{ animation-duration:1.8s !important; animation-iteration-count:infinite !important; }
-  .side-hud__bars i{ animation-duration:1.6s !important; animation-iteration-count:infinite !important; }
-}
+/* Theo yêu cầu: KHÔNG còn khối "giảm chuyển động" (prefers-reduced-motion)
+   nữa — mọi hiệu ứng/animation trên trang chạy đầy đủ, giống hệt nhau
+   trên mọi máy, không tự rút gọn theo cài đặt hệ điều hành. */
 
 /* thiết bị không hover (điện thoại) — bỏ hiệu ứng hover gây dính */
 @media (hover:none){
