@@ -81,7 +81,7 @@ Sora biến thành Kamen Rider Mais — Rider chuột đầu tiên trong lịch 
     link:        "https://odysee.com/@bbthichsubkr:5/KAMEN-RIDER-MY-TH:9",
     extra: {                         // tuỳ chọn — hiện thêm trong modal
       "Thể loại": "Tokusatsu",
-      "Số tập": "5/??"
+      "Số tập": "6/??"
     }
   },
   {
@@ -133,7 +133,7 @@ Baku nhận được Zeztz Driver và trở thành Kamen Rider Zeztz, chiến đ
    { date: "18.09.2026", lines: ["DATABASE UPDATED", "PROJECT ARCHIVE SYNCHRONIZED"] },
    --------------------------------------------------------- */
 const SYSTEM_LOG = [
-  { date: "04.10.2026", lines: ["CẬP NHẬT KAMEN RIDER MY-TH TẬP 5", "UPDATE"] },
+  { date: "04.10.2026", lines: ["CẬP NHẬT KAMEN RIDER MY-TH TẬP 6", "UPDATE"] },
   { date: "30.08.2026", lines: ["HOÀN THÀNH KAMEN RIDER ZEZTZ", "HOÀN THÀNH"] },
   { date: "05.09.2026", lines: ["HOÀN THÀNH KAMEN RIDER AGITO 25TH:Psychic War", "HOÀN THÀNH"] },
   { date: "XX.XX.2026", lines: ["TỔNG HỢP MOVIE KAMEN RIDER", "UPDATE"] },
